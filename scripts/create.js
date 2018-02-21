@@ -7,7 +7,10 @@ const partialsDir  = 'src/partials';
 const pagesDir  = 'src/pages';
 const dataDir  = 'src/data';
 const layoutsDir = 'src/layouts';
-
+const publicDir = 'public';
+const cssDir = 'src/assets/css';
+const sass = 'src/assets/sass';
+const less = 'src/assets/less';
 const makeChildDir = function(directory){
     fsextra.mkdirs(directory)
     .then(function(){
@@ -25,6 +28,7 @@ const createProject = function(){
         makeChildDir(pagesDir);
         makeChildDir(dataDir);
         makeChildDir(layoutsDir);
+        makeChildDir(publicDir);
     })
     .catch(function(error){
         console.log(`Error creating directory ${directory}. The error was: ${error.message}`)

@@ -1,0 +1,42 @@
+{
+  "name": "@amlopez333/mrhyde",
+  "version": "0.1.0",
+  "description": "a simple implementation of static page builder like jekyll",
+  "main": "./bin/mrhyde.js",
+  "preferGlobal": true,
+  "bin": "./bin/mrhyde.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/amlopez333/MrHyde.git"
+  },
+  "keywords": [
+    "npm",
+    "hyde",
+    "static",
+    "page",
+    "builder",
+    "node",
+    "js",
+    "javascript",
+    "jekyll"
+  ],
+  "author": "Andy Lopez",
+  "license": "ISC",
+  "engines": {
+    "node": ">=4.2.4"
+  },
+  "bugs": {
+    "url": "https://github.com/amlopez333/MrHyde/issues"
+  },
+  "homepage": "https://github.com/amlopez333/MrHyde#readme",
+  "dependencies": {
+    "commander": "^2.14.1",
+    "ejs": "^2.5.7",
+    "fs-extra": "^5.0.0",
+    "glob": "^7.1.2",
+    "inquirer": "^5.1.0"
+  }
+}
