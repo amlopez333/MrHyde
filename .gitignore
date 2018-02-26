@@ -60,3 +60,5 @@ typings/
 # testing output folders
 src
 src/*.*
+public
+public/*.*
