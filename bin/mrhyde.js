@@ -4,7 +4,7 @@ const {prompt} = require('inquirer');
 const siteConfig = require('./siteConfigQuestions');
 const projectConfig = require('./projectConfigQuestions');
 const {createProject, makeProjectConfig, makeSiteConfig} = require('../scripts/create');
-const {buildSite} = require('../scripts/build');
+const {buildSite, buildSass, build} = require('../scripts/build');
 
 program
 .description('A static site builder like Jekyll')
@@ -24,6 +24,20 @@ program
 .action(function(){
     buildSite()
 });
+program
+.command('buildsass')
+.alias('bsass')
+.description('If project is using sass, it generates the corresponding css.')
+.action(function(){
+    buildSass();
+})
+program
+.command('build')
+.alias('b')
+.description('Builds entire project')
+.action(function(){
+    build();
+})
 program
 .command('pconf')
 .alias('pcf')

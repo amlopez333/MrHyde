@@ -2,12 +2,20 @@ const {promisify} = require('util');
 const fsextra = require('fs-extra');
 const path = require('path');
 const ejs = require('ejs');
+const sass = require('node-sass');
 const frontMatter = require('front-matter');
 const marked = require('marked');
 const ejsRenderFile = promisify(ejs.renderFile);
 const promisifiedGlob = promisify(require('glob'));
 
 const srcPath = './src';
+
+/*
+Utility functions
+*/
+const ignoreSassDir = function(path){
+    return path.indexOf('sass') === -1
+}
 
 
 const render = function(distPath, config){
@@ -53,7 +61,39 @@ const render = function(distPath, config){
         console.log(error);
     })
 }
-
+const buildSass = function(){
+    fsextra.ensureFile(`${srcPath}/assets/css/main.css`)
+    .then(function(){
+        fsextra.removeSync(`${srcPath}/assets/css/main.css`)
+    })
+    .catch(function(error){
+        return console.error(error);
+    })
+    promisifiedGlob('**/*.@(scss|sass)', {ignore: [`partials/*.scss`], cwd: `${srcPath}/assets/sass`})
+    .then(function(files){
+        files.forEach(function(file){
+            const fileData = path.parse(file)
+            sass.render({
+                file: `${srcPath}/assets/sass/${file}`,
+                },
+                function(error, result){
+                    if(!error){
+                        fsextra.writeFile(`${srcPath}/assets/css/main.css`, result.css, {flag: 'a'})
+                        .then(function(){
+                            console.log(`Processing ${file}`);
+                        })
+                        .catch(function(error){
+                            console.error(error);
+                        })
+                    }
+                }
+            )
+        })
+    })
+    .catch(function(error){
+        console.error(error)
+    })
+}
 const buildSite = function(){
     const projectConfig = require('../src/config/project.config');
     const config = require('../src/config/site.config');
@@ -61,19 +101,24 @@ const buildSite = function(){
     console.log(`Emptying ${distPath}`);
     fsextra.emptyDirSync(distPath);
     console.log(`Emptied ${distPath}`);
-//check for sass and less
     console.log(`Copying ${srcPath}/assets to ${distPath}/assets`)
-    fsextra.copy(`${srcPath}/assets`, `${distPath}/assets`)
+    fsextra.copy(`${srcPath}/assets`, `${distPath}/assets`, {filter: ignoreSassDir})
     .then(function(){
         console.log(`Copied ${srcPath}/assets to ${distPath}/assets`);
         return render(distPath, config)
     })
     .catch(function(error){
         console.log(`Error copying ${srcPath}/assets to ${distPath}/assets. The error was ${error.message}. Aborting build.`)
-    })
-    
-    
+    })    
+}
+
+const build = function(){
+    const projectConfig = require('../src/config/project.config');
+    if(projectConfig.sass){
+        buildSass();
+    }
+    return buildSite();
 }
 
 
-module.exports = {buildSite}
+module.exports = {buildSite, buildSass, build}
