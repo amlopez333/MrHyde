@@ -5,3 +5,4 @@ const server = function(path){
     ignore: ['node_modules']
   })
 }
+module.exports = {server};
