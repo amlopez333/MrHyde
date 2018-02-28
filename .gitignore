@@ -62,3 +62,5 @@ src
 src/*.*
 public
 public/*.*
+dist
+dist/*.*
