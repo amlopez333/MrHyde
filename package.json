@@ -1,6 +1,6 @@
 {
   "name": "@amlopez333/mrhyde",
-  "version": "0.3.0",
+  "version": "0.4.2",
   "description": "a simple implementation of static page builder like jekyll",
   "main": "./bin/mrhyde.js",
   "preferGlobal": true,
@@ -33,6 +33,7 @@
   },
   "homepage": "https://github.com/amlopez333/MrHyde#readme",
   "dependencies": {
+    "chokidar": "^2.0.2",
     "commander": "^2.14.1",
     "ejs": "^2.5.7",
     "front-matter": "^2.3.0",
@@ -41,6 +42,6 @@
     "inquirer": "^5.1.0",
     "marked": "^0.3.16",
     "node-sass": "^4.7.2",
-    "serve": "^6.4.11"
+    "serve": "^6.5.0"
   }
 }
