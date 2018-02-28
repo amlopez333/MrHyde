@@ -1,23 +1,15 @@
 const projectConfigQuestions = [
     {
-        type: 'input',
+        type: 'confirm',
         name: 'sass',
-        message: 'Do you want to use SASS? (y/n)'
+        message: 'Do you want to use SASS?',
+        default: false
     },
     {
         type: 'input',
-        name: 'less',
-        message: 'Do you want to use Less? (y/n)'
-    },
-    {
-        type: 'input',
-        name: 'bootstrap4',
-        message: 'Do you want to use Bootstrap 4? (y/n)'
-    },
-    {
-        type: 'input',
-        name: 'materialize',
-        message: 'Do you want to use Materialize CSS? (y/n)'
+        name: 'buildPath',
+        message: 'What is the name of the output path? Default is',
+        default: 'public'
     },
 ];
 

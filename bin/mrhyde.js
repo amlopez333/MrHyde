@@ -3,26 +3,24 @@ const program = require('commander');
 const {prompt} = require('inquirer');
 const siteConfig = require('./siteConfigQuestions');
 const projectConfig = require('./projectConfigQuestions');
-const {createProject, makeProjectConfig, makeSiteConfig} = require('../scripts/create');
-const {buildSite, buildSass, build} = require('../scripts/build');
+const {create} = require('../scripts/create');
+const {buildSite, buildSass, build, buildW} = require('../scripts/build');
 
 program
 .description('A static site builder like Jekyll')
 .version('0.1.0');
 
-program
-.command('create')
-.alias('c')
-.description('Create a new project')
-.action(function(){
-    createProject()
-});
+
 program
 .command('buildsite')
 .alias('bs')
 .description('Process all templates and partials to create site pages.')
-.action(function(){
-    buildSite()
+.option('-w, --watch', 'Watches src/* for changes.')
+.action(function(cmd){
+    if(cmd.watch){
+        buildW();
+    }
+    return buildSite()
 });
 program
 .command('buildsass')
@@ -39,32 +37,33 @@ program
     build();
 })
 program
-.command('pconf')
-.alias('pcf')
-.description('If non-existant, creates project.config file. This file is used in order to determine how to build the project.')
+.command('init')
+.alias('i')
+.description('Creates a new MrHyde Project from scratch')
 .action(function(){
-    prompt(projectConfig)
-    .then(function(answers){
-        makeProjectConfig(answers, 'project');
+    console.log('To start, we are going to ask you some questions about your site.')
+    prompt(siteConfig)
+    .then(function(siteAnswers){
+        console.log('Now we are going to ask you questions about the project setup and architecture.')
+        prompt(projectConfig)
+        .then(function(projectAnswers){
+            create(siteAnswers, projectAnswers);
+        })
+        .catch(function(error){
+            console.error(error);
+        })
     })
     .catch(function(error){
         console.log(error)
     });
 });
 program
-.command('sconf')
-.alias('scf')
-.description('If non-existant, creates site.config file. This file will contain all the information used to build the templates.')
+.command('buildwatch')
+.alias('bw')
+.description('builds entire project and watches for changes')
 .action(function(){
-    prompt(siteConfig)
-    .then(function(answers){
-        makeSiteConfig(answers, 'site');
-    })
-    .catch(function(error){
-        console.log(error)
-    });
-});
-
+    buildW();
+})
 
 
 
