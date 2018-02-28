@@ -96,8 +96,8 @@ const buildSass = function(){
     })
 }
 const buildSite = function(){
-    const projectConfig = require('../src/config/project.config');
-    const config = require('../src/config/site.config');
+    const projectConfig = require(`${srcPath}/config/project.config`);
+    const config = require(`${srcPath}/config/site.config`);
     const distPath = projectConfig.buildPath || './public';
     console.log(`Emptying ${distPath}`);
     fsextra.emptyDirSync(distPath);
@@ -114,7 +114,7 @@ const buildSite = function(){
 }
 
 const build = function(){
-    const projectConfig = require('../src/config/project.config');
+    const projectConfig = require(`${srcPath}/config/project.config`);
     if(projectConfig.sass){
         buildSass();
     }
