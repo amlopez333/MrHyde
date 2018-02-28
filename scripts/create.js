@@ -8,10 +8,9 @@ const pagesDir  = 'src/pages';
 const dataDir  = 'src/data';
 const layoutsDir = 'src/layouts';
 const configDir = 'src/config';
-const publicDir = 'public';
 const cssDir = 'src/assets/css';
-const sass = 'src/assets/sass';
-const less = 'src/assets/less';
+const sassDir = 'src/assets/sass';
+
 
 const makeChildDir = function(directory){
     fsextra.mkdirs(directory)
@@ -22,7 +21,7 @@ const makeChildDir = function(directory){
         console.log(`Error creating directory ${directory}. The error was: ${error.message}`)
     })
 }
-const createProject = function(){
+const createProject = function(projectConfig){
     fsextra.mkdirs(srcDir)
     .then(function(){
         makeChildDir(assetsDir);
@@ -31,37 +30,30 @@ const createProject = function(){
         makeChildDir(dataDir);
         makeChildDir(layoutsDir);
         makeChildDir(configDir);
-        makeChildDir(publicDir);
+        makeChildDir(projectConfig.buildPath);
+        makeChildDir(cssDir);
+        if(projectConfig.sass){
+            makeChildDir(sassDir);
+        }
     })
     .catch(function(error){
         console.log(`Error creating directory ${directory}. The error was: ${error.message}`)
     })
 }
-const makeProjectConfig = function(configObject, filename){
-    Object.keys(configObject).forEach(function(key){
-        if(configObject[key] === 'n'){
-            return configObject[key] = false;
-        }
-        configObject[key] = true;
-    })
+
+const makeProjectConfig = function(configObject){
+    
     const configString = 
     `project = {${Object.keys(configObject).map(function(key){
             return `
-            ${key}: ${configObject[key]}`
+            ${key}: ${typeof(configObject[key]) === 'string' ? `"${configObject[key]}"` : configObject[key]}`
         })}
 }
 module.exports = project
     `
-    console.log(configString);
-    fsextra.ensureFile(`${configDir}/${filename}.config.js`)
-    .then(function(){
-        saveConfigFile(configString, filename)
-    })
-    .catch(function(error){
-        console.log(`Failed to create project.config file. The error was: ${error.message}`)
-    })
+    return configString
 }
-const makeSiteConfig = function(configObject, filename){
+const makeSiteConfig = function(configObject){
     const configString = 
     `module.exports = {
         site: {${Object.keys(configObject).map(function(key){
@@ -71,13 +63,8 @@ const makeSiteConfig = function(configObject, filename){
     }
 }
 `
-    fsextra.ensureFile(`${configDir}/${filename}.config.js`)
-    .then(function(){
-        saveConfigFile(configString, filename)
-    })
-    .catch(function(error){
-        console.log(`Failed to create project.config file. The error was: ${error.message}`)
-    })
+    return configString
+    
 }
 const saveConfigFile = function(configString, filename){
     fsextra.outputFile(`${configDir}/${filename}.config.js`, configString)
@@ -88,4 +75,25 @@ const saveConfigFile = function(configString, filename){
         console.log(`Failed to create project.config file. The error was: ${error.message}`)
     })
 }
-module.exports = {createProject, makeProjectConfig, makeSiteConfig};
+const create = function(siteConfig, projectConfig){
+    createProject(projectConfig);
+    const projectConfigString = makeProjectConfig(projectConfig);
+    const siteConfigString = makeSiteConfig(siteConfig);
+    fsextra.ensureFile(`${configDir}/site.config.js`)
+    .then(function(){
+        saveConfigFile(siteConfigString, 'site')
+    })
+    .catch(function(error){
+        console.log(`Failed to create siste.config file. The error was: ${error.message}`)
+    })
+    fsextra.ensureFile(`${configDir}/project.config.js`)
+    .then(function(){
+        saveConfigFile(projectConfigString, 'project')
+    })
+    .catch(function(error){
+        console.log(`Failed to create project.config file. The error was: ${error.message}`)
+    })
+}
+
+
+module.exports = {create};

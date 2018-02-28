@@ -5,6 +5,7 @@ const ejs = require('ejs');
 const sass = require('node-sass');
 const frontMatter = require('front-matter');
 const marked = require('marked');
+const chokidar = require('chokidar');
 const ejsRenderFile = promisify(ejs.renderFile);
 const promisifiedGlob = promisify(require('glob'));
 
@@ -97,7 +98,7 @@ const buildSass = function(){
 const buildSite = function(){
     const projectConfig = require('../src/config/project.config');
     const config = require('../src/config/site.config');
-    const distPath = projectConfig.build.path || './public';
+    const distPath = projectConfig.buildPath || './public';
     console.log(`Emptying ${distPath}`);
     fsextra.emptyDirSync(distPath);
     console.log(`Emptied ${distPath}`);
@@ -119,6 +120,18 @@ const build = function(){
     }
     return buildSite();
 }
+const buildW = function(){
+    const buildWatcher = chokidar.watch(srcPath);
+buildWatcher
+.on('add', function(path){
+    console.log('added', path)
+    
+})
+.on('change', function(path){
+    console.log('changed', path)
+    return build();
+})
+}
 
 
-module.exports = {buildSite, buildSass, build}
+module.exports = {buildSite, buildSass, build, buildW};
