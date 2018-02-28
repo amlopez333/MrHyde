@@ -5,6 +5,7 @@ const siteConfig = require('./siteConfigQuestions');
 const projectConfig = require('./projectConfigQuestions');
 const {create} = require('../scripts/create');
 const {buildSite, buildSass, build, buildW} = require('../scripts/build');
+const {server} = require('../devServer/server');
 
 program
 .description('A static site builder like Jekyll')
@@ -33,8 +34,12 @@ program
 .command('build')
 .alias('b')
 .description('Builds entire project')
+.option('-w, --watch', 'Watches src/* for changes')
 .action(function(){
-    build();
+    if(cmd.watch){
+        buildW();
+    }
+    return build();
 })
 program
 .command('init')
@@ -44,7 +49,7 @@ program
     console.log('To start, we are going to ask you some questions about your site.')
     prompt(siteConfig)
     .then(function(siteAnswers){
-        console.log('Now we are going to ask you questions about the project setup and architecture.')
+        console.log('Now we are going to ask you questions about the project\'s setup and architecture.')
         prompt(projectConfig)
         .then(function(projectAnswers){
             create(siteAnswers, projectAnswers);
@@ -58,11 +63,13 @@ program
     });
 });
 program
-.command('buildwatch')
-.alias('bw')
-.description('builds entire project and watches for changes')
-.action(function(){
+.command('serve [path]')
+.alias('s')
+.description('Launches dev server to feed files. Also triggers build process.')
+.action(function(path){
     buildW();
+    build();
+    return server(path);
 })
 
 
