@@ -9,7 +9,7 @@ const chokidar = require('chokidar');
 const ejsRenderFile = promisify(ejs.renderFile);
 const promisifiedGlob = promisify(require('glob'));
 
-const srcPath = './src';
+const srcPath = `${process.cwd()}/src`;
 
 /*
 Utility functions
