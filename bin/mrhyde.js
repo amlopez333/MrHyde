@@ -3,7 +3,7 @@ const program = require('commander');
 const {prompt} = require('inquirer');
 const siteConfig = require('./siteConfigQuestions');
 const projectConfig = require('./projectConfigQuestions');
-const {create} = require('../scripts/create');
+const {create, copyLayouts} = require('../scripts/create');
 const {buildSite, buildSass, build, buildW} = require('../scripts/build');
 const {server} = require('../devServer/server');
 
@@ -35,7 +35,7 @@ program
 .alias('b')
 .description('Builds entire project')
 .option('-w, --watch', 'Watches src/* for changes')
-.action(function(){
+.action(function(cmd){
     if(cmd.watch){
         buildW();
     }
@@ -71,7 +71,12 @@ program
     build();
     return server(path);
 })
-
+program
+.command('copy')
+.alias('c')
+.action(function(){
+    copyLayouts()
+})
 
 
 program.parse(process.argv);

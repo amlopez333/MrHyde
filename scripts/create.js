@@ -28,10 +28,12 @@ const createProject = function(projectConfig){
         makeChildDir(partialsDir);
         makeChildDir(pagesDir);
         makeChildDir(dataDir);
-        makeChildDir(layoutsDir);
+        //makeChildDir(layoutsDir);
         makeChildDir(configDir);
         makeChildDir(projectConfig.buildPath);
         makeChildDir(cssDir);
+        copyLayouts();
+        copyPages();
         if(projectConfig.sass){
             makeChildDir(sassDir);
         }
@@ -94,6 +96,41 @@ const create = function(siteConfig, projectConfig){
         console.log(`Failed to create project.config file. The error was: ${error.message}`)
     })
 }
+const copyLayouts = function(){
+    fsextra.copy(path.join(__dirname, '..','/layouts/'), `./src/layouts`)
+    .then(function(){
+        console.log('Created /src/layouts');
+    })
+    .catch(function(error){
+        console.log(error)
+    });
+}
+const copyPages = function(){
+    fsextra.copy(path.join(__dirname, '..','/pages/'), `./src/pages`)
+    .then(function(){
+        console.log('Created /src/pages');
+    })
+    .catch(function(error){
+        console.log(error)
+    });
+}
+const copycss = function(){
+    fsextra.copy(path.join(__dirname, '..','/css/'), `./src/css`)
+    .then(function(){
+        console.log('Created /src/css');
+    })
+    .catch(function(error){
+        console.log(error)
+    });
+}
+const copyPartials = function(){
+    fsextra.copy(path.join(__dirname, '..','/partials/'), `./src/partials`)
+    .then(function(){
+        console.log('Created /src/partials');
+    })
+    .catch(function(error){
+        console.log(error)
+    });
+}
 
-
-module.exports = {create};
+module.exports = {create, copyLayouts};
