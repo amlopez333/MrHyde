@@ -26,8 +26,8 @@ title: Pages with EJS and JSON
 
 <h2>All things BBQ!</h2>
 <ul>
-  <% site.projects.map((project) => { %>
-    <h1><%= project.title %></h1>
-    <li><a href="<%= project.url %>" target = '_blank'><%= project.name %></a></li>
+  <% site.allthingsbbq.map((atbbq) => { %>
+    <h1><%= atbbq.title %></h1>
+    <li><a href="<%= atbbq.url %>" target = '_blank'><%= atbbq.name %></a></li>
   <% }) %>
 </ul>
