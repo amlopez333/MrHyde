@@ -28,7 +28,7 @@ const createProject = function(projectConfig){
         makeChildDir(partialsDir);
         makeChildDir(pagesDir);
         makeChildDir(dataDir);
-        //makeChildDir(layoutsDir);
+        makeChildDir(layoutsDir);
         makeChildDir(configDir);
         makeChildDir(projectConfig.buildPath);
         makeChildDir(cssDir);
@@ -37,6 +37,9 @@ const createProject = function(projectConfig){
         if(projectConfig.sass){
             makeChildDir(sassDir);
         }
+        copyAssets();
+        copyPartials();
+        copyData();
     })
     .catch(function(error){
         console.log(`Error creating directory ${directory}. The error was: ${error.message}`)
@@ -57,11 +60,13 @@ module.exports = project
 }
 const makeSiteConfig = function(configObject){
     const configString = 
-    `module.exports = {
+    `const projects = require('../data/projects')   
+    module.exports = {
         site: {${Object.keys(configObject).map(function(key){
             return `
             ${key}: "${configObject[key]}"`
-    })}
+    })},
+            projects
     }
 }
 `
@@ -99,7 +104,7 @@ const create = function(siteConfig, projectConfig){
 const copyLayouts = function(){
     fsextra.copy(path.join(__dirname, '..','/layouts/'), `./src/layouts`)
     .then(function(){
-        console.log('Created /src/layouts');
+        console.log('Copied files to /src/layouts');
     })
     .catch(function(error){
         console.log(error)
@@ -108,25 +113,35 @@ const copyLayouts = function(){
 const copyPages = function(){
     fsextra.copy(path.join(__dirname, '..','/pages/'), `./src/pages`)
     .then(function(){
-        console.log('Created /src/pages');
+        console.log('Copied files to /src/pages');
     })
     .catch(function(error){
         console.log(error)
     });
 }
-const copycss = function(){
-    fsextra.copy(path.join(__dirname, '..','/css/'), `./src/css`)
-    .then(function(){
-        console.log('Created /src/css');
-    })
-    .catch(function(error){
-        console.log(error)
-    });
-}
+
 const copyPartials = function(){
     fsextra.copy(path.join(__dirname, '..','/partials/'), `./src/partials`)
     .then(function(){
-        console.log('Created /src/partials');
+        console.log('Copied files to /src/partials');
+    })
+    .catch(function(error){
+        console.log(error)
+    });
+}
+const copyAssets = function(){
+    fsextra.copy(path.join(__dirname, '..','/assets/'), `./src/assets`)
+    .then(function(){
+        console.log('Copied files to /src/assets');
+    })
+    .catch(function(error){
+        console.log(error)
+    });
+}
+const copyData = function(){
+    fsextra.copy(path.join(__dirname, '..','/data/'), `./src/data`)
+    .then(function(){
+        console.log('Created files to /src/data');
     })
     .catch(function(error){
         console.log(error)
