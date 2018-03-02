@@ -1,7 +1,9 @@
 [{
-    "name": "Some Project",
-    "url": "http://example.com/p1"
+    "title": "BBQ Ribs",
+    "name": "Aaron Franklin's take on Ribs",
+    "url": "https://www.youtube.com/watch?v=0eSFdddaRnk"
   }, {
-    "name": "Another Project",
-    "url": "http://example.com/p2"
+    "title": "Brisket Burnt Ends",
+    "name": "Brisket Burnt Ends from How To BBQ Right with Malcolm Reed",
+    "url": "https://www.youtube.com/watch?v=FVOh8430oCs"
   }]

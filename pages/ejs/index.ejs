@@ -1,8 +1,15 @@
 ---
-title: Pages with EJS
+title: Pages with EJS and JSON
 ---
-<h1>Creating pages using EJS</h1>
+<h1>Using EJS</h1>
+<h2>Layouts</h2>
+<p>Your layout is a mix between HTML and EJS. In your layouts you can include any number of files
+  you defined in your <code>partials</code> directory. The only real constraint you have when creating layouts is
+  all the content that is defined in your you are going to render has to go inside the following EJS tag:
+</p>
+<p class = 'text-center'><span><code><%%- body %></code></span></p>
 
+<h2>Creating Pages Using EJS</h2>
 <p>Aside from creating the layouts, you can also use EJS 
   to create pages. This way you can embed conditionals and variables
   into your pages. For example, these are some variables.
@@ -12,11 +19,15 @@ title: Pages with EJS
 <h2>JSON</h2>
 
 <p>You can use JSON to pass data to a page created using EJS and 
-  render the data. You just have to expose the JSON data to the site.config file. 
+  render the data. You just have to expose the JSON data to the <code>site.config</code> file.
+  This is done by requiring the data file inside <code>site.config</code> and adding it 
+  to the exported object.
   The data below is coming from a JSON file.</p>
 
+<h2>All things BBQ!</h2>
 <ul>
   <% site.projects.map((project) => { %>
-    <li><a href="<%= project.url %>"><%= project.name %></a></li>
+    <h1><%= project.title %></h1>
+    <li><a href="<%= project.url %>" target = '_blank'><%= project.name %></a></li>
   <% }) %>
 </ul>
