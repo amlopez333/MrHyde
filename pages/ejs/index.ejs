@@ -1,0 +1,22 @@
+---
+title: Pages with EJS
+---
+<h1>Creating pages using EJS</h1>
+
+<p>Aside from creating the layouts, you can also use EJS 
+  to create pages. This way you can embed conditionals and variables
+  into your pages. For example, these are some variables.
+  Site title: <%= site.title %>
+  Page Title: <%= page.title %></p>
+
+<h2>JSON</h2>
+
+<p>You can use JSON to pass data to a page created using EJS and 
+  render the data. You just have to expose the JSON data to the site.config file. 
+  The data below is coming from a JSON file.</p>
+
+<ul>
+  <% site.projects.map((project) => { %>
+    <li><a href="<%= project.url %>"><%= project.name %></a></li>
+  <% }) %>
+</ul>
