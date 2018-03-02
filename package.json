@@ -1,6 +1,6 @@
 {
   "name": "@amlopez333/mrhyde",
-  "version": "0.4.4",
+  "version": "0.4.5",
   "description": "a simple implementation of static page builder like jekyll",
   "main": "./bin/mrhyde.js",
   "preferGlobal": true,
@@ -40,6 +40,7 @@
     "fs-extra": "^5.0.0",
     "glob": "^7.1.2",
     "inquirer": "^5.1.0",
+    "livereload": "^0.7.0",
     "marked": "^0.3.16",
     "node-sass": "^4.7.2",
     "serve": "^6.5.0"
