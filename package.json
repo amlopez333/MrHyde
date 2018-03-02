@@ -1,6 +1,6 @@
 {
   "name": "@amlopez333/mrhyde",
-  "version": "0.4.5",
+  "version": "0.4.6",
   "description": "a simple implementation of static page builder like jekyll",
   "main": "./bin/mrhyde.js",
   "preferGlobal": true,
